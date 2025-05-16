@@ -17,9 +17,8 @@ def app_context():
     }
     app = create_app(config)
 
-    with app.test_client():
-        with app.app_context():
-            db.create_all()
+    with app.app_context():
+        db.create_all()
         yield
         db.session.remove()
         db.drop_all()
