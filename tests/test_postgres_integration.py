@@ -9,7 +9,7 @@ from extensions import db
 from models import ThoughtModel
 
 @pytest.fixture
-def client():
+def app_context():
     config = {
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": os.getenv("DATABASE_URL"),
@@ -17,10 +17,10 @@ def client():
     }
     app = create_app(config)
 
-    with app.test_client() as client:
+    with app.test_client():
         with app.app_context():
             db.create_all()
-        yield client
+        yield
         db.session.remove()
         db.drop_all()
 
